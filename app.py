@@ -5,14 +5,7 @@ from io import BytesIO
 
 app = Flask(__name__)
 
-@app.route('/generate_pdf', methods=['POST'])
-def generate_pdf():
-    # Extract the GitLab data from the POST request
-    data = request.json
-    private_token = data['private_token']
-    project_id = data['project_id']
-    merge_request_id = data['merge_request_id']
-
+def generate_code_review_pdf(private_token, project_id, merge_request_id):
     # Fetch the discussions from the GitLab API
     response = requests.get(
         f'https://gitlab.example.com/api/v4/projects/{project_id}/merge_requests/{merge_request_id}/discussions',
@@ -43,8 +36,21 @@ def generate_pdf():
     pdf = BytesIO()
     pisa_status = pisa.CreatePDF(html, dest=pdf)
 
+    return pdf
+
+@app.route('/generate_pdf', methods=['POST'])
+def handle_generate_pdf():
+    # Extract the GitLab data from the POST request
+    data = request.json
+    private_token = data['private_token']
+    project_id = data['project_id']
+    merge_request_id = data['merge_request_id']
+
+    # Generate the PDF
+    pdf = generate_code_review_pdf(private_token, project_id, merge_request_id)
+
     # Return the PDF
-    return send_file(pdf, attachment_filename="code_review.pdf")
+    return send_file(pdf, attachment_filename="code_review.pdf", as_attachment=True)
 
 if __name__ == "__main__":
     app.run(debug=True)
