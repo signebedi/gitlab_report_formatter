@@ -1,8 +1,17 @@
+import logging
 from flask import Flask, request, send_file, jsonify
 from xhtml2pdf import pisa
 from io import BytesIO
 
 app = Flask(__name__)
+
+# Initialize logger
+logger = logging.getLogger('api')
+handler = logging.FileHandler('api.log')
+formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+handler.setFormatter(formatter)
+logger.addHandler(handler)
+logger.setLevel(logging.INFO)
 
 # Replace this with your actual API keys
 VALID_API_KEYS = ['key1', 'key2', 'key3']
@@ -38,6 +47,9 @@ def handle_generate_pdf():
     api_key = request.headers.get('X-API-KEY')
     if api_key not in VALID_API_KEYS:
         return jsonify({'error': 'Invalid API key'}), 401
+
+    # Log the API key
+    logger.info(f'API key used: {api_key}')
 
     # Ensure there is a body in the request
     if not request.json:
