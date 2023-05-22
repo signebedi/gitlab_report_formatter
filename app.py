@@ -1,4 +1,4 @@
-from flask import Flask, request, send_file
+from flask import Flask, request, send_file, jsonify
 from xhtml2pdf import pisa
 from io import BytesIO
 
@@ -31,8 +31,14 @@ def generate_code_review_pdf(discussions):
 
 @app.route('/generate_pdf', methods=['POST'])
 def handle_generate_pdf():
+    # Ensure there is a body in the request
+    if not request.json:
+        return jsonify({'error': 'Missing body in request'}), 400
+
     # Extract the discussions from the POST request
     data = request.json
+    if 'discussions' not in data:
+        return jsonify({'error': 'Missing discussions in request'}), 400
     discussions = data['discussions']
 
     # Generate the PDF
