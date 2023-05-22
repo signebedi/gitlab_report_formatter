@@ -4,6 +4,9 @@ from io import BytesIO
 
 app = Flask(__name__)
 
+# Replace this with your actual API keys
+VALID_API_KEYS = ['key1', 'key2', 'key3']
+
 def generate_code_review_pdf(discussions):
     # Start the HTML string
     html = """
@@ -31,6 +34,11 @@ def generate_code_review_pdf(discussions):
 
 @app.route('/generate_pdf', methods=['POST'])
 def handle_generate_pdf():
+    # Check the API key
+    api_key = request.headers.get('X-API-KEY')
+    if api_key not in VALID_API_KEYS:
+        return jsonify({'error': 'Invalid API key'}), 401
+
     # Ensure there is a body in the request
     if not request.json:
         return jsonify({'error': 'Missing body in request'}), 400
