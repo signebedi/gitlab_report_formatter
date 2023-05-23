@@ -16,6 +16,7 @@ logger.setLevel(logging.INFO)
 VALID_API_KEYS = ['key1', 'key2', 'key3']
 
 def generate_code_review_pdf(discussions):
+    # Start the HTML string
     html = """
     <!DOCTYPE html>
     <html>
@@ -23,14 +24,36 @@ def generate_code_review_pdf(discussions):
     <h1>Code Review Comments</h1>
     """
 
+    # Add each discussion to the HTML
     for discussion in discussions:
-        html += f'<p><strong>{discussion["id"]}</strong>: {discussion["notes"][0]["body"]}</p>'
+        note = discussion['notes'][0]
+        author = note['author']
+        avatar_url = author['avatar_url']
+        timestamp = note['created_at']
+        username = author['username']
+        web_url = author['web_url']
+        name = author['name']
 
+        html += f'''
+        <hr>
+        <div style="display: flex; justify-content: space-between; align-items: start;">
+            <div style="flex-grow: 1;">
+                <p><strong>{discussion["id"]}</strong>: {note["body"]}</p>
+                <p>{name} <a href="{web_url}">@{username}</a></p>
+            </div>
+            <div style="text-align: right;">
+                <img src="{avatar_url}" alt="Avatar" style="height: 50px; width: 50px;">
+                <p>{timestamp}</p>
+            </div>
+        </div>
+        '''
+    # End the HTML string
     html += """
     </body>
     </html>
     """
 
+    # Convert the HTML to a PDF
     pdf = BytesIO()
     pisa_status = pisa.CreatePDF(html, dest=pdf)
 
