@@ -84,9 +84,11 @@ def generate_code_review_pdf(discussions):
                     <hr style="border-top: 1px dotted #000; color: transparent; background-color: transparent; height: 1px; width:100%;">
                     <table>
                         <tr>
-                            <td><img src="{avatar_url}" alt="Avatar" style="height: 14px; width: 14px;"></td>
-                            <td>{name} <a href="{web_url}">@{username}</a></td>
-                            <td>{timestamp} - {note["body"]}</td>
+                            <td style="width: 30px;"><img src="{avatar_url}" alt="Avatar" style="height: 14px; width: 14px;"></td>
+                            <td>{name} <a href="{web_url}">@{username}</a> {timestamp}</td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">{note["body"]}</td>
                         </tr>
                     </table>
                     '''
