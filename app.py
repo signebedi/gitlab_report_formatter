@@ -89,7 +89,7 @@ def generate_code_review_pdf(discussions):
                             <td style="text-align: right; vertical-align: top;">{_timestamp}</td>
                         </tr>
                         <tr>
-                            <td colspan="3">{note["body"]}</td>
+                            <td colspan="3"><p style='word-break: break-all;'>{note["body"]}</p></td>
                         </tr>
                     </table>
                     '''
