@@ -47,8 +47,8 @@ def generate_code_review_pdf(discussions):
                     </div>
                 </td>
                 <td style="vertical-align: top;">
-                    <p><strong>{discussion["id"]}</strong>: {note["body"]}</p>
                     <p>{name} <a href="{web_url}">@{username}</a></p>
+                    <p><strong>{discussion["id"]}</strong>: {note["body"]}</p>
                 </td>
                 <td style="text-align: right; vertical-align: top;">
                     <p>{timestamp}</p>
