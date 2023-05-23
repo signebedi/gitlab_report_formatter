@@ -36,12 +36,13 @@ def convert_utc_to_est(utc_timestamp_str):
 
 def generate_code_review_pdf(discussions):
     # Start the HTML string
-    html = """
+    html = f'''
     <!DOCTYPE html>
     <html>
     <body>
     <h1>Code Review Comments</h1>
-    """
+    <p style="text-align: right;">{datetime.now(pytz.timezone('America/New_York')).strftime("%Y-%m-%d %H:%M:%S")}</p>
+    '''
 
     # Add each discussion to the HTML
     for discussion in discussions:
