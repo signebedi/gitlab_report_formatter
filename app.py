@@ -72,8 +72,16 @@ def generate_code_review_pdf(discussions):
         '''
 
         for note in notes[1:]:
+
+            author = note['author']
+            avatar_url = author['avatar_url']
+            timestamp = convert_utc_to_est(note['created_at'])
+            username = author['username']
+            web_url = author['web_url']
+            name = author['name']
+
             html += f'''
-                    <p>{note["body"]}</p>
+                    <p>{note["body"]} - {name} <a href="{web_url}">@{username}</a> {timestamp}</p>
             '''
 
         html += f'''
