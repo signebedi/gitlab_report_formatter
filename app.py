@@ -74,11 +74,11 @@ def generate_code_review_pdf(discussions):
         for note in notes[1:]:
 
             _author = note['author']
-            _avatar_url = author['avatar_url']
+            _avatar_url = _author['avatar_url']
             _timestamp = convert_utc_to_est(note['created_at'])
-            _username = author['username']
-            _web_url = author['web_url']
-            _name = author['name']
+            _username = _author['username']
+            _web_url = _author['web_url']
+            _name = _author['name']
 
             html += f'''
                     <hr style="border-top: 1px dotted #000; color: transparent; background-color: transparent; height: 1px; width:100%;">
