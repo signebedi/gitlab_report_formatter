@@ -38,8 +38,9 @@ def generate_code_review_pdf(discussions):
         <hr>
         <div style="display: flex; justify-content: space-between; align-items: start;">
             <div style="flex-grow: 1;">
+                <img src="{avatar_url}" alt="Avatar" style="height: 20px; width: 20px; border-radius: 50%;">
                 <p><strong>{discussion["id"]}</strong>: {note["body"]}</p>
-                <p><img src="{avatar_url}" alt="Avatar" style="height: 20px; width: 20px;">{name} <a href="{web_url}">@{username}</a></p>
+                <p>{name} <a href="{web_url}">@{username}</a></p>
             </div>
             <div style="text-align: right;">
                 <p>{timestamp}</p>
