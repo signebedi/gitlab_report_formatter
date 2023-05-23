@@ -41,7 +41,7 @@ def generate_code_review_pdf(discussions):
         <hr>
         <table style="width: 100%;">
             <tr>
-                <td style="width: 20px;">
+                <td style="width: 20px; padding-right: 5px;">
                     <div style="height: 20px; width: 20px; overflow: hidden;">
                         <img src="{avatar_url}" alt="Avatar" style="height: 20px; width: 20px;">
                     </div>
