@@ -82,7 +82,14 @@ def generate_code_review_pdf(discussions):
 
             html += f'''
                     <hr style="border-top: 1px dotted #000; color: transparent; background-color: transparent; height: 1px; width:100%;">
-                    <p><img src="{avatar_url}" alt="Avatar" style="display: inline-block; height: 1em; width: 1em; margin-right: 0.3em;"> {name} <a href="{web_url}">@{username}</a> {timestamp} - {note["body"]}</p>            '''
+                    <table>
+                        <tr>
+                            <td><img src="{avatar_url}" alt="Avatar" style="height: 14px; width: 14px;"></td>
+                            <td>{name} <a href="{web_url}">@{username}</a></td>
+                            <td>{timestamp} - {note["body"]}</td>
+                        </tr>
+                    </table>
+                    '''
 
         html += f'''
                 </td>
