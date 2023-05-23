@@ -15,6 +15,25 @@ logger.setLevel(logging.INFO)
 
 VALID_API_KEYS = ['key1', 'key2', 'key3']
 
+from datetime import datetime
+import pytz
+
+def convert_utc_to_est(utc_timestamp_str):
+    # Parse the UTC timestamp string to a datetime object
+    utc_timestamp = datetime.strptime(utc_timestamp_str, "%Y-%m-%dT%H:%M:%S.%fZ")
+
+    # Set the timezone of the timestamp to UTC
+    utc_timestamp = utc_timestamp.replace(tzinfo=pytz.UTC)
+
+    # Convert to Eastern Time
+    est_timestamp = utc_timestamp.astimezone(pytz.timezone('America/New_York'))
+
+    # Format the timestamp
+    formatted_timestamp = est_timestamp.strftime("%Y-%m-%d %H:%M:%S")
+
+    return formatted_timestamp
+
+
 def generate_code_review_pdf(discussions):
     # Start the HTML string
     html = """
@@ -29,7 +48,7 @@ def generate_code_review_pdf(discussions):
         note = discussion['notes'][0]
         author = note['author']
         avatar_url = author['avatar_url']
-        timestamp = note['created_at']
+        timestamp = convert_utc_to_est(note['created_at'])
         username = author['username']
         web_url = author['web_url']
         name = author['name']
@@ -43,7 +62,7 @@ def generate_code_review_pdf(discussions):
             <tr>
                 <td style="width: 30px; padding-right: 10px; vertical-align: top;">
                     <div style="height: 30px; width: 30px; overflow: hidden;">
-                        <img src="{avatar_url}" alt="Avatar" style="height: 20px; width: 20px;">
+                        <img src="{avatar_url}" alt="Avatar" style="height: 30px; width: 30px;">
                     </div>
                 </td>
                 <td style="vertical-align: top;">
