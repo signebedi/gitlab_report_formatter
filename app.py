@@ -71,7 +71,7 @@ def generate_code_review_pdf(discussions):
                     <p><strong>{discussion["id"]}</strong>: {first_note["body"]}</p>
         '''
 
-        for note in notes[1:]:
+        for _note in notes[1:]:
 
             _author = note['author']
             _avatar_url = author['avatar_url']
