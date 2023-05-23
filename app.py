@@ -73,22 +73,23 @@ def generate_code_review_pdf(discussions):
 
         for note in notes[1:]:
 
-            author = note['author']
-            avatar_url = author['avatar_url']
-            timestamp = convert_utc_to_est(note['created_at'])
-            username = author['username']
-            web_url = author['web_url']
-            name = author['name']
+            _author = note['author']
+            _avatar_url = author['avatar_url']
+            _timestamp = convert_utc_to_est(note['created_at'])
+            _username = author['username']
+            _web_url = author['web_url']
+            _name = author['name']
 
             html += f'''
                     <hr style="border-top: 1px dotted #000; color: transparent; background-color: transparent; height: 1px; width:100%;">
                     <table>
                         <tr>
-                            <td style="width: 30px;"><img src="{avatar_url}" alt="Avatar" style="height: 14px; width: 14px;"></td>
-                            <td>{name} <a href="{web_url}">@{username}</a> {timestamp}</td>
+                            <td style="width: 30px;"><img src="{_avatar_url}" alt="Avatar" style="height: 10px; width: 10px;"></td>
+                            <td>{_name} <a href="{_web_url}">@{_username}</a></td>
+                            <td style="text-align: right; vertical-align: top;">{_timestamp}</td>
                         </tr>
                         <tr>
-                            <td colspan="2">{note["body"]}</td>
+                            <td colspan="3">{_note["body"]}</td>
                         </tr>
                     </table>
                     '''
