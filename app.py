@@ -34,20 +34,27 @@ def generate_code_review_pdf(discussions):
         web_url = author['web_url']
         name = author['name']
 
+        # Unfortunately, a great deal of styles are not supported by xhtml2pdf...
+        # https://xhtml2pdf.readthedocs.io/en/latest/reference.html#supported-css-properties
+
         html += f'''
         <hr>
-        <div style="display: flex; justify-content: space-between; align-items: start;">
-            <div style="text-align: left; flex-grow: 0; margin-right: 20px;">
-                <img src="{avatar_url}" alt="Avatar" style="height: 50px; width: 50px; border-radius: 50%;">
-            </div>
-            <div style="flex-grow: 1;">
-                <p><strong>{discussion["id"]}</strong>: {note["body"]}</p>
-                <p>{name} <a href="{web_url}">@{username}</a></p>
-            </div>
-            <div style="text-align: right;">
-                <p>{timestamp}</p>
-            </div>
-        </div>
+        <table style="width: 100%;">
+            <tr>
+                <td style="width: 20px;">
+                    <div style="height: 20px; width: 20px; overflow: hidden;">
+                        <img src="{avatar_url}" alt="Avatar" style="height: 20px; width: 20px;">
+                    </div>
+                </td>
+                <td>
+                    <p><strong>{discussion["id"]}</strong>: {note["body"]}</p>
+                    <p>{name} <a href="{web_url}">@{username}</a></p>
+                </td>
+                <td style="text-align: right;">
+                    <p>{timestamp}</p>
+                </td>
+            </tr>
+        </table>
         '''
     # End the HTML string
     html += """
