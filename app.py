@@ -81,7 +81,8 @@ def generate_code_review_pdf(discussions):
             name = author['name']
 
             html += f'''
-                    <p><img src="{avatar_url}" alt="Avatar" style="height: 5px; width: 5px;"> {name} <a href="{web_url}">@{username}</a> {timestamp} - {note["body"]}</p>
+                    <hr style="border-top: 1px dotted #000; color: transparent; background-color: transparent; height: 1px; width:100%;">
+                    <p><img src="{avatar_url}" alt="Avatar" style="height: 7px; width: 7px; padding-right: 3px;"> {name} <a href="{web_url}">@{username}</a> {timestamp} - {note["body"]}</p>
             '''
 
         html += f'''
