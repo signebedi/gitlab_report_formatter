@@ -44,12 +44,12 @@ def generate_code_review_pdf(discussions):
     <p style="text-align: right;">{datetime.now(pytz.timezone('America/New_York')).strftime("%Y-%m-%d %H:%M:%S")}</p>
     '''
 
-    # Add each discussion to the HTML
     for discussion in discussions:
-        note = discussion['notes'][0]
-        author = note['author']
+        notes = discussion['notes']
+        first_note = notes[0]
+        author = first_note['author']
         avatar_url = author['avatar_url']
-        timestamp = convert_utc_to_est(note['created_at'])
+        timestamp = convert_utc_to_est(first_note['created_at'])
         username = author['username']
         web_url = author['web_url']
         name = author['name']
@@ -68,7 +68,15 @@ def generate_code_review_pdf(discussions):
                 </td>
                 <td style="vertical-align: top;">
                     <p>{name} <a href="{web_url}">@{username}</a></p>
-                    <p><strong>{discussion["id"]}</strong>: {note["body"]}</p>
+                    <p><strong>{discussion["id"]}</strong>: {first_note["body"]}</p>
+        '''
+
+        for note in notes[1:]:
+            html += f'''
+                    <p>{note["body"]}</p>
+            '''
+
+        html += f'''
                 </td>
                 <td style="text-align: right; vertical-align: top;">
                     <p>{timestamp}</p>
