@@ -37,8 +37,10 @@ def generate_code_review_pdf(discussions):
         html += f'''
         <hr>
         <div style="display: flex; justify-content: space-between; align-items: start;">
+            <div style="text-align: left; flex-grow: 0; margin-right: 20px;">
+                <img src="{avatar_url}" alt="Avatar" style="height: 50px; width: 50px; border-radius: 50%;">
+            </div>
             <div style="flex-grow: 1;">
-                <img src="{avatar_url}" alt="Avatar" style="height: 20px; width: 20px; border-radius: 50%;">
                 <p><strong>{discussion["id"]}</strong>: {note["body"]}</p>
                 <p>{name} <a href="{web_url}">@{username}</a></p>
             </div>
