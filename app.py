@@ -1,3 +1,34 @@
+"""
+This Flask application receives a list of GitLab discussions as a part of a POST request, processes the 
+discussions and generates a PDF file with the relevant information. The application then returns this PDF 
+to the client. This is designed to work in environments where the Flask server may not have direct access 
+to the GitLab server, and thus requires the GitLab data to be passed along with the HTTP request.
+
+Key components of the application include:
+
+1. handle_generate_pdf() view: This is the main endpoint of the application that listens to POST requests. 
+    It first checks the API key for authentication. If the key is valid, it proceeds to read the request 
+    body for the GitLab discussions data. If the data is in the correct format, it invokes the 
+    generate_code_review_pdf() function to create a PDF and then sends this PDF back to the client. It 
+    also includes robust error handling to manage cases where the API key is invalid or the request body 
+    is in an incorrect format.
+
+2. generate_code_review_pdf() function: This function takes the discussions data and the name for the PDF 
+as input. It converts the data into an HTML string, with each discussion represented in a specific format. 
+The function then uses the xhtml2pdf library to convert this HTML string into a PDF. The resulting PDF is 
+then returned as a BytesIO object.
+
+3. send_pdf_response() function: This function takes a BytesIO object and a filename as input. It reads 
+the bytes from the BytesIO object, creates a Flask response object with the appropriate headers to make 
+the file downloadable, and then sends this response object back to the client.
+
+4. convert_utc_to_est() function: This function is a utility function that helps in converting the timestamp 
+data from UTC to EST, which is then used in the generate_code_review_pdf() function.
+
+The application also incorporates logging mechanisms to track the API keys used for requests. This allows 
+for monitoring and auditing of the use of the API endpoint.
+"""
+
 import logging
 from flask import Flask, request, Response
 from xhtml2pdf import pisa
@@ -5,7 +36,6 @@ from io import BytesIO
 from typing import List, Dict, Any, Optional
 from datetime import datetime
 import pytz
-
 
 
 app = Flask(__name__)
