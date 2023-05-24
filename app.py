@@ -117,6 +117,27 @@ def generate_code_review_pdf(discussions, pdf_name):
 
 @app.route('/generate_pdf', methods=['POST'])
 def handle_generate_pdf():
+    """
+    Handle a POST request to generate a PDF of GitLab code review comments.
+
+    This function expects the request to include a JSON body with a key 'discussions' 
+    that contains an array of discussions from a GitLab merge request. Each discussion 
+    should be a dictionary with the same structure as the objects returned by the 
+    GitLab API's discussions endpoint.
+
+    An optional 'name' field can be included in the JSON body to set a custom name 
+    for the PDF. If no name is provided, the default name 'Code Review Comments' is used.
+
+    The request must also include a valid API key in the 'X-API-KEY' header.
+
+    Returns:
+        - A PDF file of the code review comments, or
+        - A JSON object with an 'error' key and a status code of 400 if the request is 
+          missing necessary data, or
+        - A JSON object with an 'error' key and a status code of 401 if an invalid API 
+          key is provided.
+    """
+
     if request.method != 'POST':
         return {'error': 'Invalid request method'}, 405
 
