@@ -66,8 +66,20 @@ def send_request():
     with open('code_review.pdf', 'wb') as f:
         f.write(flask_response.content)
 
+    root.destroy()  # Close the dialog box after the request is sent
+
 def main():
+    global root
+
     root = Tk()
+
+    # Set the width of the dialog box to 25 percent the screen size
+    screen_width = root.winfo_screenwidth()
+    screen_height = root.winfo_screenheight()
+    dialog_width = screen_width * 0.25
+    dialog_height = screen_height * 0.25
+
+    root.geometry(f"{int(dialog_width)}x{int(dialog_height)}")
 
     global api_key, private_token, project_id, merge_request_id, project_name
 
