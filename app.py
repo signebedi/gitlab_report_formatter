@@ -2,6 +2,10 @@ import logging
 from flask import Flask, request, Response
 from xhtml2pdf import pisa
 from io import BytesIO
+from datetime import datetime
+import pytz
+
+
 
 app = Flask(__name__)
 
@@ -14,9 +18,6 @@ logger.addHandler(handler)
 logger.setLevel(logging.INFO)
 
 VALID_API_KEYS = ['key1', 'key2', 'key3']
-
-from datetime import datetime
-import pytz
 
 def convert_utc_to_est(utc_timestamp_str):
     # Parse the UTC timestamp string to a datetime object
@@ -34,13 +35,13 @@ def convert_utc_to_est(utc_timestamp_str):
     return formatted_timestamp
 
 
-def generate_code_review_pdf(discussions):
+def generate_code_review_pdf(discussions, pdf_name):
     # Start the HTML string
     html = f'''
     <!DOCTYPE html>
     <html>
     <body>
-    <h1>Code Review Comments</h1>
+    <h1>{pdf_name}</h1>
     <p style="text-align: right;">{datetime.now(pytz.timezone('America/New_York')).strftime("%Y-%m-%d %H:%M:%S")}</p>
     '''
 
@@ -131,7 +132,9 @@ def handle_generate_pdf():
         return {'error': 'Missing discussions in request'}, 400
     discussions = data['discussions']
 
-    pdf = generate_code_review_pdf(discussions)
+    pdf_name = data.get('name', 'Code Review Comments')
+
+    pdf = generate_code_review_pdf(discussions, pdf_name)
     pdf.seek(0)
 
     return send_pdf_response(pdf, "code_review.pdf")
