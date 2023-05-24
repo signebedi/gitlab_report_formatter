@@ -2,7 +2,7 @@ import logging
 from flask import Flask, request, Response
 from xhtml2pdf import pisa
 from io import BytesIO
-from typing import Optional
+from typing import List, Dict, Any, Optional
 from datetime import datetime
 import pytz
 
@@ -31,6 +31,7 @@ def convert_utc_to_est(utc_timestamp_str: Optional[str]) -> Optional[str]:
     Args:
         utc_timestamp_str: A string representing a timestamp in UTC. 
         The string should be in the format: "%Y-%m-%dT%H:%M:%S.%fZ".
+        This is the default timezone and format that ships from gitlab.
 
     Returns:
         A string representing the input timestamp converted to Eastern Time, 
@@ -58,7 +59,30 @@ def convert_utc_to_est(utc_timestamp_str: Optional[str]) -> Optional[str]:
     return formatted_timestamp
 
 
-def generate_code_review_pdf(discussions, pdf_name):
+
+def generate_code_review_pdf(discussions: List[Dict[str, Any]], pdf_name: str) -> Optional[BytesIO]:
+
+    """
+    Generate a PDF file of GitLab code review comments from a list of discussions.
+
+    This function creates an HTML string with the content of the discussions, each formatted as a table row,
+    and converts this HTML string to a PDF file, which is returned as a BytesIO object.
+
+    Args:
+        discussions: A list of dictionaries, each representing a discussion from a GitLab merge request.
+                     Each dictionary should contain a 'notes' key, which is a list of note dictionaries. 
+                     Each note dictionary should include 'author', 'avatar_url', 'created_at', 'username',
+                     'web_url', 'name', and 'body' keys.
+
+        pdf_name: A string that will be used as the title of the PDF document.
+
+    Returns:
+        A BytesIO object representing the generated PDF file.
+
+    Raises:
+        ValueError: If a key is missing in the discussions or notes dictionaries.
+    """
+
     # Start the HTML string
     html = f'''
     <!DOCTYPE html>
