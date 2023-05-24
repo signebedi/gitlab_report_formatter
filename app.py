@@ -117,6 +117,9 @@ def generate_code_review_pdf(discussions, pdf_name):
 
 @app.route('/generate_pdf', methods=['POST'])
 def handle_generate_pdf():
+    if request.method != 'POST':
+        return {'error': 'Invalid request method'}, 405
+
     api_key = request.headers.get('X-API-KEY')
     if api_key not in VALID_API_KEYS:
         logger.info('Invalid API key used: {}'.format(api_key))
