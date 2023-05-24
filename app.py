@@ -29,13 +29,12 @@ The application also incorporates logging mechanisms to track the API keys used 
 for monitoring and auditing of the use of the API endpoint.
 """
 
-import logging
+import logging, configparser, pytz, os
 from flask import Flask, request, Response
 from xhtml2pdf import pisa
 from io import BytesIO
 from typing import List, Dict, Any, Optional
 from datetime import datetime
-import pytz
 
 
 app = Flask(__name__)
@@ -48,7 +47,21 @@ handler.setFormatter(formatter)
 logger.addHandler(handler)
 logger.setLevel(logging.INFO)
 
-VALID_API_KEYS = ['key1', 'key2', 'key3']
+# Define a default key
+DEFAULT_KEY = "1840ca99-74ac-45d2-8476-3baf66f64125"
+
+# Load the API keys into memory
+def load_api_keys(file):
+    if os.path.isfile(file):
+        config = configparser.ConfigParser()
+        config.read(file)
+        return list(config['API_KEYS'].values())
+    else:
+        return [DEFAULT_KEY]
+
+VALID_API_KEYS = load_api_keys('config.ini')
+
+# print(VALID_API_KEYS)
 
 def convert_utc_to_est(utc_timestamp_str: Optional[str]) -> Optional[str]:
     """
