@@ -210,7 +210,22 @@ def handle_generate_pdf():
 
     return send_pdf_response(pdf, "code_review.pdf")
 
-def send_pdf_response(pdf_bytes, filename):
+def send_pdf_response(pdf_bytes: BytesIO, filename: str) -> Any:
+    """
+    Create a Flask response object to send a PDF file as a downloadable attachment.
+
+    This function reads the bytes from a BytesIO object representing a PDF file, 
+    sets the appropriate headers to make the file downloadable, 
+    and returns a Flask response object with these settings.
+
+    Args:
+        pdf_bytes: A BytesIO object representing the PDF file to send.
+        filename: A string to be used as the name of the downloaded file.
+
+    Returns:
+        A Flask response object that, when returned from a Flask route, 
+        will send a downloadable PDF file to the client.
+    """
     response = Response(pdf_bytes.read(),
                         mimetype="application/pdf",
                         headers={"Content-disposition":
