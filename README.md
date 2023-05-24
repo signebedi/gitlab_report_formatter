@@ -44,29 +44,36 @@ If you want an interface that can deal abstractly with multiple projects, you ca
 ```python
 import requests
 from tkinter import *
+from tkinter import messagebox
 
 def send_request():
-    # Fetch the discussions from the GitLab API
-    response = requests.get(
-        f'https://gitlab.example.com/api/v4/projects/{project_id.get()}/merge_requests/{merge_request_id.get()}/discussions',
-        headers={'PRIVATE-TOKEN': private_token.get()}
-    )
-    response.raise_for_status()
-    discussions = response.json()
+    try:
+        # Fetch the discussions from the GitLab API
+        response = requests.get(
+            f'https://gitlab.example.com/api/v4/projects/{project_id.get()}/merge_requests/{merge_request_id.get()}/discussions',
+            headers={'PRIVATE-TOKEN': private_token.get()}
+        )
+        response.raise_for_status()
+        discussions = response.json()
 
-    # Send the discussions to the Flask application
-    flask_response = requests.post(
-        'http://flask_app.example.com/generate_pdf',
-        json={'discussions': discussions, 'name': f"{project_name.get()} Code Review"},
-        headers={"X-API-KEY": api_key.get()}
-    )
-    flask_response.raise_for_status()
+        # Send the discussions to the Flask application
+        flask_response = requests.post(
+            'http://flask_app.example.com/generate_pdf',
+            json={'discussions': discussions, 'name': f"{project_name.get()} Code Review"},
+            headers={"X-API-KEY": api_key.get()}
+        )
+        flask_response.raise_for_status()
 
-    # Save the PDF
-    with open('code_review.pdf', 'wb') as f:
-        f.write(flask_response.content)
+        # Save the PDF
+        with open('code_review.pdf', 'wb') as f:
+            f.write(flask_response.content)
 
-    root.destroy()  # Close the dialog box after the request is sent
+        root.destroy()  # Close the dialog box after the request is sent
+    except Exception as e:
+        messagebox.showerror("Error", str(e))
+
+def close_app():
+    root.quit()  # stops mainloop
 
 def main():
     global root
@@ -104,6 +111,7 @@ def main():
     project_name.pack()
 
     Button(root, text="Generate PDF", command=send_request).pack()
+    Button(root, text="Close", command=close_app).pack()  # added a close button
 
     root.mainloop()
 
