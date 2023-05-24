@@ -2,6 +2,7 @@ import logging
 from flask import Flask, request, Response
 from xhtml2pdf import pisa
 from io import BytesIO
+from typing import Optional
 from datetime import datetime
 import pytz
 
@@ -19,7 +20,29 @@ logger.setLevel(logging.INFO)
 
 VALID_API_KEYS = ['key1', 'key2', 'key3']
 
-def convert_utc_to_est(utc_timestamp_str):
+def convert_utc_to_est(utc_timestamp_str: Optional[str]) -> Optional[str]:
+    """
+    Convert a UTC timestamp string to an Eastern Time timestamp string.
+
+    This function parses the input UTC timestamp string to a datetime object,
+    sets the timezone of the timestamp to UTC, converts the timestamp to Eastern Time,
+    and then formats and returns the timestamp as a string.
+
+    Args:
+        utc_timestamp_str: A string representing a timestamp in UTC. 
+        The string should be in the format: "%Y-%m-%dT%H:%M:%S.%fZ".
+
+    Returns:
+        A string representing the input timestamp converted to Eastern Time, 
+        in the format: "%Y-%m-%d %H:%M:%S". 
+        Returns None if the input string is None.
+
+    Raises:
+        ValueError: If the input string is not in the expected format.
+    """
+    if utc_timestamp_str is None:
+        return None
+        
     # Parse the UTC timestamp string to a datetime object
     utc_timestamp = datetime.strptime(utc_timestamp_str, "%Y-%m-%dT%H:%M:%S.%fZ")
 
