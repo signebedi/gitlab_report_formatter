@@ -25,7 +25,7 @@ discussions = response.json()
 # Send the discussions to the Flask application
 flask_response = requests.post(
     'http://flask_app.example.com/generate_pdf',
-    json={'discussions': discussions},
+    json={'discussions': discussions, 'name': "YOUR_PROJECT_NAME Code Review"},
     headers={"X-API-KEY": api_key}
 )
 flask_response.raise_for_status()
